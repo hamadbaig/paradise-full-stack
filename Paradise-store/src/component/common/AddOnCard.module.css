@@ -1,0 +1,21 @@
+.btnDiv {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.button {
+  border: 1px solid lightgray;
+  padding: 1rem;
+  font-size: 1.7rem;
+  background-color: #fff;
+  border-radius: 10px;
+}
+.button:hover {
+  background-color: lightgray;
+}
+.card {
+  border: 1px solid darkgray;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}

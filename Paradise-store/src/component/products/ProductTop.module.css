@@ -1,0 +1,123 @@
+.container {
+    padding: 20px;
+  }
+  
+  .categories {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    gap: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .category {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffebcc;
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+  }
+  
+  .icon {
+    font-size: 2em;
+  }
+  
+  .name {
+    margin-top: 10px;
+    text-align: center;
+  }
+  
+  .breadcrumb {
+    margin-top: 20px;
+  }
+  
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .reviews {
+    display: flex;
+    align-items: center;
+  }
+  
+  .reviews span {
+    font-size: 1.2em;
+    margin-right: 5px;
+  }
+  
+  .filterOptions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .filterOptions select {
+    padding: 5px;
+  }
+  
+  .whatsapp {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+  }
+  
+  .whatsapp img {
+    width: 50px;
+    height: 50px;
+  }
+  
+  @media (max-width: 768px) {
+    .filters {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .reviews {
+      margin-bottom: 10px;
+    }
+    
+    .filterOptions {
+      width: 100%;
+      justify-content: space-between;
+    }
+    
+    .category {
+      width: 80px;
+      height: 80px;
+    }
+    
+    .icon {
+      font-size: 1.5em;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .category {
+      width: 60px;
+      height: 60px;
+    }
+    
+    .icon {
+      font-size: 1.2em;
+    }
+    
+    .name {
+      font-size: 0.8em;
+    }
+    
+    .whatsapp img {
+      width: 40px;
+      height: 40px;
+    }
+  }
+  

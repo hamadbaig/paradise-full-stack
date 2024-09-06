@@ -1,0 +1,126 @@
+.Footer {
+  background-color: #f2f2f2;
+  /* width: 100%; */
+  font-size: 18px;
+}
+
+.Footermain {
+  display: grid;
+  grid-template-columns: repeat(3, 1FR);
+}
+
+.signupcontainer {
+  border: 2px solid white;
+}
+
+.signupcontainer {
+  width: -webkit-fill-available;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4rem !important;
+  background-color: #f1f1f1;
+}
+
+.signuptitle {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+  color: black;
+}
+
+.signupform {
+  display: flex;
+  align-items: center;
+}
+
+.inputcontainer {
+  display: flex;
+  align-items: center;
+  border-bottom-left-radius: 10px;
+  border-top-left-radius: 10px;
+}
+
+.icon {
+  padding: 10px;
+  background: #ddd;
+  border-right: 1px solid #ccc;
+}
+
+.emailinput {
+  border: none;
+  outline: none;
+  height: 40px;
+}
+
+.submitbutton {
+  background-color: #ff6600;
+  color: white;
+  padding: 10px 10px;
+  border: none;
+  cursor: pointer;
+  height: 40px;
+  border-bottom-right-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.submitbutton:hover {
+  background-color: #e65c00;
+}
+
+.Footersecond {
+  display: flex;
+  justify-content: center;
+  padding: 5rem;
+  flex-wrap: wrap;
+  color: black;
+}
+
+.Footersecond div {
+  /* width: 130px; */
+  width: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-right: 2px solid gray;
+  padding-right: 1rem;
+  margin: 1rem;
+}
+
+.Footersecond div:hover {
+  color: #7e2a66;
+}
+
+.connect {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.ftlogo2 {
+  width: 50px;
+  height: 50px;
+}
+
+.ftlogo {
+  width: 70px;
+  height: 50px;
+}
+
+.ftlogo img,
+.ftlogo2 img {
+  width: 100%;
+  height: 100%;
+}
+
+.cat:hover {
+  cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+  .Footer {
+    display: none;
+  }
+}

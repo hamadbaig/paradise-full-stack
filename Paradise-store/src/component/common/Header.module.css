@@ -1,0 +1,314 @@
+.icon {
+  color: #ffffff;
+  font-size: 2rem !important;
+  padding: 0.5rem;
+}
+
+.icon :hover {
+  color: rgb(207, 203, 203);
+}
+
+.icon2 :hover {
+  color: rgb(207, 203, 203);
+}
+
+.icon2 {
+  padding: 0.5rem;
+  font-size: 4rem !important;
+}
+
+.header {
+  z-index: 10;
+  position: sticky;
+  top: 0px;
+  background-color: var(--color-primary);
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.logoDiv {
+  width: 200px;
+  height: 100px;
+}
+
+.logoimg {
+  width: 100%;
+  height: 100%;
+}
+
+.times {
+  /* display: flex;
+  justify-content: right; */
+  text-align: right;
+}
+
+.contentdiv {
+  position: absolute;
+  left: 0px;
+  top: 0%;
+  background-color: var(--color-secondary);
+  width: 80%;
+  height: 100vh;
+}
+
+.profile {
+  background-color: #333333;
+  font-size: 2rem;
+  padding: 1rem;
+}
+
+.prologo {
+  display: flex;
+  border-bottom: 1px solid white;
+}
+
+.prologo p {
+  margin: 0px;
+}
+
+.protext {
+  font-size: 1.5rem !important;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--color-secondary);
+}
+
+.options {
+  font-size: 1.5rem;
+  text-decoration: none;
+  color: #333333;
+}
+
+.drawer {
+  border-bottom: 1px solid lightgrey;
+  padding: 1rem;
+}
+
+.topbaar {
+  display: none;
+}
+
+.multitimes2 {
+  display: none !important;
+}
+
+.headerbot {
+  display: none;
+  color: black;
+}
+
+/* search baar  */
+.searchContainer {
+  display: flex;
+  align-items: center;
+  /* width: 300px; */
+  /* margin: 50px auto;  */
+}
+
+.searchInput {
+  width: 100%;
+  height: 2rem;
+  padding: 10px;
+  border: none;
+  border-radius: 5px 0 0 5px;
+  font-size: 2rem;
+  outline: none;
+}
+
+.searchButton {
+  background-color: #e3b70a;
+  /* Button color similar to the image */
+  border: none;
+  padding: 10px;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.searchButton:hover {
+  background-color: #B0941B;
+  /* Slightly darker color on hover */
+}
+
+.searchIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.searchContainer2 {
+  display: none;
+}
+
+
+
+.num {
+  position: relative;
+  right: -15px;
+  bottom: -7px;
+  background-color: rgb(233, 22, 15);
+  color: white;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem !important;
+}
+
+
+
+@media (max-width: 768px) {
+  .searchContainer {
+    display: none;
+  }
+
+  .searchContainer2 {
+    display: block;
+    border: none;
+    padding: 10px;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (min-width: 668px) {
+
+  .icon {
+    font-size: 3rem !important;
+  }
+
+  .toggleicon {
+    display: none;
+  }
+
+  .topbaar {
+    display: block;
+    background-color: #7e2a66;
+    display: flex;
+    color: white;
+
+    justify-content: right;
+    font-size: 1.5rem;
+    gap: 2rem;
+    /* padding-right: 3rem; */
+    padding: 1rem 3rem 1rem 1rem;
+  }
+
+  .multitimes2 {
+    display: block !important;
+    display: flex !important;
+    gap: 3rem;
+    padding-right: 3rem;
+    align-items: center;
+  }
+
+  .multitimes2 div {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    font-size: 1.5rem;
+  }
+
+  .headerbot {
+    display: flex;
+    justify-content: left;
+    background-color: #ffffff;
+    box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.4);
+    font-size: 1.7rem;
+    gap: 1rem;
+    padding: 1rem 2rem 1rem 2rem;
+    margin-bottom: 10px;
+    position: relative;
+    overflow: visible;
+    /* Ensure dropdowns can appear outside the headerbot */
+  }
+
+  .headerbot::-webkit-scrollbar {
+    display: none;
+  }
+
+  .headerbot .cat {
+    border-bottom: 4px solid transparent;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  .cat {
+    cursor: pointer;
+
+  }
+
+  .cat span {
+    font-size: 3rem;
+    position: relative;
+    top: 5px;
+    margin: 0px;
+    padding: 0px;
+  }
+
+  .headerbot .cat:hover {
+    border-bottom: 4px solid #7e2a66;
+  }
+
+  .subCategories {
+    position: absolute;
+    top: 100%;
+    /* Position subCategories directly below the cat */
+    left: 0;
+    /* Align subCategories with the left edge of cat */
+    background-color: white;
+    border: 1px solid #ddd;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    /* Add shadow for better visibility */
+    width: auto;
+    padding: 10px 0;
+    opacity: 0;
+    /* Start as invisible */
+    visibility: hidden;
+    /* Hide from view */
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    /* Smooth transition */
+  }
+
+  .headerbot div:hover .subCategories {
+    opacity: 1;
+    /* Make visible on hover */
+    visibility: visible;
+  }
+
+  .subCategory {
+    padding: 8px 20px;
+    cursor: pointer;
+    white-space: nowrap;
+    /* Prevent text from wrapping */
+  }
+
+  .subCategory:hover {
+    background-color: #f0f0f0;
+    /* Add hover effect for subcategories */
+  }
+
+}
+
+.Link {
+  text-decoration: none;
+  color: black;
+}

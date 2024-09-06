@@ -1,0 +1,14 @@
+:root {
+  --color-primary: #d884c2;
+  --color-secondary: #ffffff;
+}
+
+html {
+  font-size: 52.5%;
+}
+body {
+  margin: 0;
+  padding: 0;
+  color: black;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+}

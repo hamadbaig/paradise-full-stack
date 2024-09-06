@@ -1,0 +1,92 @@
+.commit {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.6rem;
+  justify-content: center;
+}
+
+.commit div {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.6rem;
+}
+
+.circle {
+  border-radius: 50%;
+  background-color: #7d8035;
+  padding: 0.5rem;
+  font-size: 2rem;
+}
+
+.icon {
+  color: white;
+}
+
+.seller {
+  background-color: #ffff;
+  padding: 3rem;
+}
+
+.seller div h2 {
+  text-align: center;
+  font-size: 3rem;
+}
+
+.seller div p {
+  text-align: center;
+  font-size: 2rem;
+}
+
+.heading2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.heading2 div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90px;
+  height: 50px;
+  background-color: #7e2a66;
+  font-size: 2rem;
+  color: white;
+  border-radius: 8%;
+}
+
+.prod {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-around;
+}
+
+.cat:hover {
+  cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+  .commit {
+    display: none;
+  }
+}
+
+@media (max-width: 786px) {
+  .seller div h2 {
+    text-align: center;
+    font-size: 2rem;
+  }
+
+  .heading2 div {
+    width: 70px;
+    height: 40px;
+    font-size: 1.5rem;
+  }
+
+  .seller div p {
+    font-size: 1.5rem;
+  }
+}
