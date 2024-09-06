@@ -76,6 +76,7 @@ const Cart = () => {
   const [apiData, setApiData] = useState([]);
   const [Step, setStep] = useState(0);
   const [pay, setpay] = useState(0);
+  const [userId, setuserId] = useState("");
 
   const handlePayWithTap = () => {
     setStep(1);
@@ -87,6 +88,10 @@ const Cart = () => {
     const auth = localStorage.getItem("user");
     if (!auth) {
       router.push(`/Login`);
+    } else {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const log = user && user._id;
+      setuserId(log);
     }
   }, [router]);
 
@@ -122,9 +127,6 @@ const Cart = () => {
 
     setTotalPrice(productTotal + shippingTotal);
   }, [Data]);
-
-  const user = JSON.parse(localStorage.getItem("user"));
-  const userId = user && user._id;
 
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
