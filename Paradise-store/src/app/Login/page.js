@@ -27,12 +27,12 @@ const Login = () => {
     if (user) {
       setEmail(user.email);
       setFullName(user.name);
+      registerUser();
+      // const result = await collectData();
 
-      const result = await collectData();
-
-      if (!result.success) {
-        await registerUser();
-      }
+      // if (!result.success) {
+      //   await registerUser();
+      // }
     }
   };
 
@@ -61,33 +61,33 @@ const Login = () => {
     }
   };
 
-  const collectData = async () => {
-    try {
-      let result = await fetch(`${apiUrl}/login`, {
-        method: "post",
-        body: JSON.stringify({ email }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+  // const collectData = async () => {
+  //   try {
+  //     let result = await fetch(`${apiUrl}/login`, {
+  //       method: "post",
+  //       body: JSON.stringify({ email }),
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
 
-      result = await result.json();
-      console.log(result);
+  //     result = await result.json();
+  //     console.log(result);
 
-      if (result.success) {
-        localStorage.setItem("user", JSON.stringify(result.data));
-        localStorage.setItem("token", JSON.stringify(result.token));
-        router.push(`/cart`);
-        return { success: true };
-      } else {
-        return { success: false };
-      }
-    } catch (error) {
-      console.error("Login error:", error);
-      alert("An error occurred during login. Please try again.");
-      return { success: false };
-    }
-  };
+  //     if (result.success) {
+  //       localStorage.setItem("user", JSON.stringify(result.data));
+  //       localStorage.setItem("token", JSON.stringify(result.token));
+  //       router.push(`/cart`);
+  //       return { success: true };
+  //     } else {
+  //       return { success: false };
+  //     }
+  //   } catch (error) {
+  //     console.error("Login error:", error);
+  //     alert("An error occurred during login. Please try again.");
+  //     return { success: false };
+  //   }
+  // };
 
   return (
     <div className={styles.signupMain}>

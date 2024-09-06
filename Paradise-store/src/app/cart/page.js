@@ -14,10 +14,6 @@ import {
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 );
-console.log(
-  "Stripe Public Key:",
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-);
 
 const StripeCheckout = ({ totalPrice, addOrder }) => {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -92,7 +88,7 @@ const Cart = () => {
     if (!auth) {
       router.push(`/Login`);
     }
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     const currentCartItems =
@@ -130,17 +126,10 @@ const Cart = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const userId = user && user._id;
 
-  if (!userId) {
-    console.error("User ID not found in local storage");
-    return;
-  }
-
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
     if (!userId) {
-      setError("User ID is missing");
-      setLoading(false);
       return;
     }
 
@@ -168,7 +157,7 @@ const Cart = () => {
     };
 
     fetchUser();
-  }, []);
+  }, [userId]);
 
   const toggleAddressForm = () => {
     setShowAddressForm(!showAddressForm);
@@ -408,75 +397,6 @@ const Cart = () => {
                       </button>
                     </div>
                   </form>
-
-                  {/* <form onSubmit={handleSubmit}>
-                    <div className={styles.addflex}>
-                      <div className={styles.formGroup}>
-                        <label htmlFor="name">Name</label>
-                        <input type="text" id="name" name="name" required />
-                      </div>
-                      <div className={styles.formGroup}>
-                        <label htmlFor="city">Recipient's City</label>
-                        <input type="text" id="city" name="city" required />
-                      </div>
-                    </div>
-                    <div className={styles.addflex}>
-                      <div className={styles.formGroup}>
-                        <label htmlFor="address">Recipient's Address</label>
-                        <input
-                          type="text"
-                          id="address"
-                          name="address"
-                          required
-                        />
-                      </div>
-                      <div className={styles.formGroup}>
-                        <label htmlFor="landmark">Landmark</label>
-                        <input type="text" id="landmark" name="landmark" />
-                      </div>
-                    </div>
-                    <div className={styles.addflex}>
-                      <div className={styles.formGroup}>
-                        <label htmlFor="mobile">Recipient's Mobile</label>
-                        <input type="text" id="mobile" name="mobile" required />
-                      </div>
-                      <div className={styles.formGroup}>
-                        <label htmlFor="email">
-                          Recipient's Email (optional)
-                        </label>
-                        <input type="email" id="email" name="email" />
-                      </div>
-                    </div>
-                    <label className={styles.radioLabel}>
-                      <input
-                        type="radio"
-                        name="addressType"
-                        value="home"
-                        defaultChecked
-                      />
-                      Home
-                    </label>
-                    <label className={styles.radioLabel}>
-                      <input type="radio" name="addressType" value="office" />
-                      Office
-                    </label>
-                    <label className={styles.radioLabel}>
-                      <input type="radio" name="addressType" value="other" />
-                      Other
-                    </label>
-                    <div>
-                      <button type="submit" className={styles.submitButton}>
-                        Save and Deliver Here
-                      </button>
-                      {/* <button
-                        className={styles.formButton}
-                        type="button"
-                        onClick={() => setShowAddressForm(false)}
-                      >
-                        Cancel
-                      </button> */}
-                  {/* </div>
-                  </form>  */}
                 </div>
               )}
               {addresses.length > 0 && (
