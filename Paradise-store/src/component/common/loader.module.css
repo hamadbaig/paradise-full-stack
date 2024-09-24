@@ -1,0 +1,38 @@
+.loaderContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loaderImage {
+  width: 50px; /* Adjust the image size */
+  height: 50px;
+  z-index: 1; /* Ensure the image stays on top of the rotating circle */
+}
+
+.rotatingCircle {
+  position: absolute;
+  width: 100px; /* Diameter of the circle */
+  height: 100px;
+  border: 4px solid rgba(0, 0, 0, 0.1); /* Lighter border for the circle */
+  border-top: 4px solid #3498db; /* Color for the rotating part */
+  border-radius: 50%;
+  animation: rotate 2s linear infinite; /* Animation for continuous rotation */
+  z-index: 0; /* Behind the image */
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

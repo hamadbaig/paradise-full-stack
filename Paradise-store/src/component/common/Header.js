@@ -15,7 +15,7 @@ import styles from "./Header.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { CategoryApi } from "@/reduxToolKit/slice";
 import { useRouter, useSearchParams } from "next/navigation";
-
+import Loader from "./Loader";
 const Header = () => {
   const [Data, setData] = useState([]);
   const [hoveredCategory, setHoveredCategory] = useState(null);
@@ -23,13 +23,14 @@ const Header = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const Categories = useSelector((state) => state.categoryApiData);
-  const isLoading = useSelector((state) => state.isLoading);
-  const error = useSelector((state) => state.error);
+
   const [isContentVisible, setIsContentVisible] = useState(false);
   const [isContentVisible2, setIsContentVisible2] = useState(false);
   const [query, setQuery] = useState("");
   const controls = useAnimation();
   const [ref, inView] = useInView();
+  const [loading, setLoading] = useState(false);
+
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   useEffect(() => {
@@ -40,7 +41,27 @@ const Header = () => {
       JSON.parse(localStorage.getItem("cartItems")) || [];
     setData(currentCartItems);
   }, []);
+  useEffect(() => {
+    // Check if window and router are available (to avoid SSR issues)
+    if (typeof window !== "undefined" && router.events) {
+      // Start loader when the route starts to change
+      const handleStart = () => setLoading(true);
+      // Stop loader when the route completes or an error occurs
+      const handleComplete = () => setLoading(false);
 
+      // Subscribe to router events
+      router.events.on("routeChangeStart", handleStart);
+      router.events.on("routeChangeComplete", handleComplete);
+      router.events.on("routeChangeError", handleComplete);
+
+      // Cleanup on unmount
+      return () => {
+        router.events.off("routeChangeStart", handleStart);
+        router.events.off("routeChangeComplete", handleComplete);
+        router.events.off("routeChangeError", handleComplete);
+      };
+    }
+  }, [router]);
   const handleMouseEnter = (categoryId) => {
     setHoveredCategory(categoryId);
     fetchSubCategories(categoryId);
@@ -63,6 +84,8 @@ const Header = () => {
 
   const handleSearch = () => {
     // alert("You searched for: " + query);
+    setLoading(true);
+
     router.push(`/singleCategory?query=${encodeURIComponent(query)}`);
 
     // You can add your search logic here
@@ -72,6 +95,7 @@ const Header = () => {
   };
   const subCategoryFind = (cat, sub) => (event) => {
     event.stopPropagation();
+
     router.push(
       `/categorySearch?category=${encodeURIComponent(
         cat._id
@@ -90,6 +114,7 @@ const Header = () => {
     router.push(`/cart`);
   };
   const goToHome = () => {
+    setLoading(true);
     router.push(`/`);
   };
   const fetchSubCategories = async (categoryId) => {

@@ -83,6 +83,24 @@ exports.getProducts = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+exports.getSortedProducts = async (req, res) => {
+  try {
+    // Fetch products and sort them alphabetically, ignoring case (A to Z)
+    const products = await Product.find()
+      .collation({ locale: "en", strength: 1 })
+      .sort({ name: 1 });
+
+    res.status(200).json({
+      message: "Data fetched successfully",
+      success: true,
+      products,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 exports.getProductsByCategories = async (req, res) => {
   try {
     const { categoryId } = req.body;
@@ -116,43 +134,6 @@ exports.getProductById = async (req, res) => {
   }
 };
 
-// exports.getProductsByCategoryAndSubCategory = async (req, res) => {
-//   try {
-//     const { categoryId, subCategoryId } = req.body;
-
-//     if (!categoryId || !Array.isArray(categoryId)) {
-//       return res.status(400).json({
-//         error: "Invalid request. Please provide an array of categories.",
-//       });
-//     }
-
-//     let query = {
-//       category: { $in: categoryId },
-//     };
-
-//     // Add subCategoryId to the query if it's provided and not empty
-//     if (
-//       subCategoryId &&
-//       Array.isArray(subCategoryId) &&
-//       subCategoryId.length > 0
-//     ) {
-//       query.SubCategory = { $in: subCategoryId };
-//     }
-
-//     // Find products that match the query
-//     const products = await Product.find(query);
-
-//     // Respond with the products found
-//     res.status(200).json({
-//       message: "Data fetched successfully",
-//       success: true,
-//       products,
-//     });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// };
 exports.getProductsByCategoryAndSubCategory = async (req, res) => {
   try {
     const { categoryId, subCategoryId } = req.body;

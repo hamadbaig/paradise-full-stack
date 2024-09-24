@@ -79,9 +79,20 @@ const Cart = () => {
   const [userId, setuserId] = useState("");
 
   const handlePayWithTap = () => {
-    setStep(1);
-  };
+    // Check if all products in the Data array have an address assigned
+    const allProductsHaveAddress = Data.every(
+      (product) => product.address && product.address.length > 0
+    );
 
+    if (allProductsHaveAddress) {
+      setStep(1); // Proceed only if all products have an address
+    } else {
+      alert("Please ensure all products have a delivery address assigned.");
+    }
+  };
+  const allProductsHaveAddress = Data.every(
+    (product) => product.address && product.address.length > 0
+  );
   const router = useRouter();
 
   useEffect(() => {
@@ -105,6 +116,22 @@ const Cart = () => {
     const newData = Data.filter((_, i) => i !== index);
     setData(newData);
     localStorage.setItem("cartItems", JSON.stringify(newData));
+  };
+  const handleRemoveaddOn = (productIndex, subIndex) => {
+    const updatedData = Data.map((product, i) => {
+      if (i === productIndex) {
+        const updatedCartItems = product.cartItem.filter(
+          (_, j) => j !== subIndex
+        );
+        return {
+          ...product,
+          cartItem: updatedCartItems,
+        };
+      }
+      return product;
+    });
+    setData(updatedData);
+    localStorage.setItem("cartItems", JSON.stringify(updatedData));
   };
 
   useEffect(() => {
@@ -175,7 +202,6 @@ const Cart = () => {
     Data[productIndex].address[0] = selectedAddress;
 
     setData([...Data]);
-    console.log(Data);
   };
 
   const handleSubmit = async (e) => {
@@ -202,7 +228,7 @@ const Cart = () => {
     if (addresses && addresses.length > 0) {
       setAddresses((prevAddresses) => [...prevAddresses, formData]);
       setShowAddressForm(false);
-      alert("Address added successfully without API call.");
+      // alert("Address added successfully without API call.");
     } else {
       // Otherwise, call the API
       try {
@@ -223,7 +249,7 @@ const Cart = () => {
           setAddresses((prevAddresses) => [...prevAddresses, formData]);
           setShowAddressForm(false);
           console.log("API Response: added successfully");
-          alert("Address added successfully.");
+          // alert("Address added successfully.");
         } else {
           const result = await response.json();
           console.error("Error:", result.error);
@@ -237,11 +263,14 @@ const Cart = () => {
   const payMethod = (num) => {
     setpay(num);
   };
+
   const addOrder = async () => {
-    if (Data[0].address === "") {
+    // Check if the address for the first product is empty
+    if (!Data[0].address || Data[0].address === "") {
       alert("Address is not selected.");
       return; // Stop execution if address is missing
     }
+
     try {
       const response = await fetch(`${apiUrl}/addOrder`, {
         method: "POST",
@@ -257,10 +286,20 @@ const Cart = () => {
 
       const result = await response.json();
       if (response.ok) {
-        console.log("Orders added successfully:", result.orders);
-        alert("Orders placed successfully");
-        clearCartItems();
-        router.push(`/`);
+        const orderId = result.order?._id; // Get the order ID
+        const totalQuantity = Data.reduce((acc, product) => {
+          return acc + 1 + (product.cartItem ? product.cartItem.length : 0); // Main item + add-on items
+        }, 0); // Calculate total quantity
+
+        console.log("Orders added successfully:", result.order);
+
+        // Display order summary in the alert
+        alert(
+          `Order placed successfully.\nOrder ID: ${orderId}\nQuantity: ${totalQuantity}\nTotal Price: ${totalPrice}`
+        );
+
+        clearCartItems(); // Clear the cart
+        router.push(`/`); // Redirect to homepage or desired route
       } else {
         console.error("Failed to add orders:", result.message);
       }
@@ -288,7 +327,7 @@ const Cart = () => {
         <div className={styles.overflow}>
           {Data.map((product, productIndex) => (
             <div key={productIndex}>
-              gift {productIndex + 1}
+              <h2 className={styles.gift}>Gift {productIndex + 1}</h2>
               <div className={styles.CartMain2}>
                 <div className={styles.cartImage}>
                   <img src={product.imageUrl} alt={product.name} />
@@ -314,28 +353,36 @@ const Cart = () => {
                 </div>
                 <div className={styles.change}>Change </div>
               </div>
+              {product.cartItem && product.cartItem.length > 0 ? (
+                <h2 className={styles.gift}>Add On Items</h2>
+              ) : null}
+
               {product.cartItem.length > 0 &&
                 product.cartItem.map((subProduct, subIndex) => (
-                  <div className={styles.CartMain2} key={subIndex}>
-                    <div className={styles.cartImage}>
-                      <img src={subProduct.imageUrl} alt={subProduct.name} />
-                      <div
-                        onClick={() => handleRemove(subIndex)}
-                        className={styles.delete}
-                      >
-                        Delete
-                      </div>
-                    </div>
-                    <div>
-                      <div>{subProduct.name}</div>
-                      <div>
-                        {subProduct.price} {"  "}
+                  <>
+                    <div className={styles.CartMain3} key={subIndex}>
+                      <div className={styles.cartImage}>
+                        <img src={subProduct.imageUrl} alt={subProduct.name} />
+                        <div
+                          onClick={() =>
+                            handleRemoveaddOn(productIndex, subIndex)
+                          }
+                          className={styles.delete}
+                        >
+                          Delete
+                        </div>
                       </div>
                       <div>
-                        <div className={styles.deliver}> QTY : 1</div>
+                        <div>{subProduct.name}</div>
+                        <div>
+                          {subProduct.price} {"  "}
+                        </div>
+                        <div>
+                          <div className={styles.deliver}> QTY : 1</div>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </>
                 ))}
               <div className={styles.CartMain2} onClick={toggleAddressForm}>
                 + Add New Address
@@ -430,6 +477,93 @@ const Cart = () => {
               )}
             </div>
           ))}
+          {allProductsHaveAddress && (
+            <div className={styles.placeorder}>
+              <h2>Place Order</h2>
+              <button
+                className={styles.submitButton}
+                onClick={handlePayWithTap}
+              >
+                select payment method
+              </button>
+            </div>
+          )}
+          {Step === 1 && (
+            <div className={styles.paymentOptions}>
+              <div className={styles.optionsTitle}>PAYMENT OPTIONS</div>
+              <div className={styles.option}>
+                <text onClick={() => payMethod(1)}>Credit/Debit Card</text>
+                {pay === 1 && (
+                  <div className={styles.cod2}>
+                    <Elements stripe={stripePromise}>
+                      <StripeCheckout
+                        totalPrice={totalPrice}
+                        addOrder={addOrder}
+                      />
+                    </Elements>
+                  </div>
+                )}
+              </div>
+
+              <div className={styles.option}>
+                <text onClick={() => payMethod(2)}>Tabby</text>
+                {pay === 2 && (
+                  <div className={styles.cod}>
+                    <p>tabby</p>
+                  </div>
+                )}
+              </div>
+              <div className={styles.option}>
+                <text onClick={() => payMethod(3)}>PayPal</text>
+                {pay === 3 && (
+                  <div className={styles.cod}>
+                    <PayPalScriptProvider
+                      options={{
+                        "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
+                      }}
+                    >
+                      <PayPalButtons
+                        style={{ layout: "vertical" }}
+                        createOrder={(data, actions) => {
+                          return actions.order.create({
+                            purchase_units: [
+                              {
+                                amount: {
+                                  value: totalPrice.toFixed(2),
+                                },
+                              },
+                            ],
+                          });
+                        }}
+                        onApprove={(data, actions) => {
+                          return actions.order.capture().then((details) => {
+                            const name = details.payer.name.given_name;
+                            alert(`Transaction completed by ${name}`);
+                            handleApprove(data.orderID);
+                          });
+                        }}
+                        onError={(err) => handlePayPalError(err)}
+                      />
+                    </PayPalScriptProvider>
+                  </div>
+                )}
+              </div>
+              <div className={styles.option}>
+                <text onClick={() => payMethod(4)}>Cash On Delivery</text>
+
+                {pay === 4 && (
+                  <>
+                    <div className={styles.cod}>
+                      <p>cash on delivery </p>
+                    </div>
+                    <button className={styles.submitButton} onClick={addOrder}>
+                      Pay AED {totalPrice}
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+          )}
         </div>
 
         <div className={styles.calculator}>
@@ -450,94 +584,6 @@ const Cart = () => {
               <p>{totalPrice} AED</p>
             </div>
             <hr />
-            <div className={styles.placeorder}>
-              <h2>Place Order</h2>
-              <button
-                className={styles.submitButton}
-                onClick={handlePayWithTap}
-              >
-                select payment method
-              </button>
-            </div>
-            {Step === 1 && (
-              <div className={styles.paymentOptions}>
-                <div className={styles.optionsTitle}>PAYMENT OPTIONS</div>
-                <div className={styles.option}>
-                  <text onClick={() => payMethod(1)}>Credit/Debit Card</text>
-                  {pay === 1 && (
-                    <div className={styles.cod2}>
-                      <Elements stripe={stripePromise}>
-                        <StripeCheckout
-                          totalPrice={totalPrice}
-                          addOrder={addOrder}
-                        />
-                      </Elements>
-                    </div>
-                  )}
-                </div>
-
-                <div className={styles.option}>
-                  <text onClick={() => payMethod(2)}>Tabby</text>
-                  {pay === 2 && (
-                    <div className={styles.cod}>
-                      <p>tabby</p>
-                    </div>
-                  )}
-                </div>
-                <div className={styles.option}>
-                  <text onClick={() => payMethod(3)}>PayPal</text>
-                  {pay === 3 && (
-                    <div className={styles.cod}>
-                      <PayPalScriptProvider
-                        options={{
-                          "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
-                        }}
-                      >
-                        <PayPalButtons
-                          style={{ layout: "vertical" }}
-                          createOrder={(data, actions) => {
-                            return actions.order.create({
-                              purchase_units: [
-                                {
-                                  amount: {
-                                    value: totalPrice.toFixed(2),
-                                  },
-                                },
-                              ],
-                            });
-                          }}
-                          onApprove={(data, actions) => {
-                            return actions.order.capture().then((details) => {
-                              const name = details.payer.name.given_name;
-                              alert(`Transaction completed by ${name}`);
-                              handleApprove(data.orderID);
-                            });
-                          }}
-                          onError={(err) => handlePayPalError(err)}
-                        />
-                      </PayPalScriptProvider>
-                    </div>
-                  )}
-                </div>
-                <div className={styles.option}>
-                  <text onClick={() => payMethod(4)}>Cash On Delivery</text>
-
-                  {pay === 4 && (
-                    <>
-                      <div className={styles.cod}>
-                        <p>cash on delivery </p>
-                      </div>
-                      <button
-                        className={styles.submitButton}
-                        onClick={addOrder}
-                      >
-                        Pay AED {totalPrice}
-                      </button>
-                    </>
-                  )}
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </div>

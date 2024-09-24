@@ -73,7 +73,27 @@ const ProductCategory = ({ cat, sub }) => {
     setProducts(sortedProducts);
     setSortOrder(value);
   };
+  const handleSort = async (e) => {
+    const selectedValue = e.target.value;
 
+    // Check if "A to Z" option is selected
+    if (selectedValue === "A to Z") {
+      try {
+        // Make the API call to fetch sorted products
+        const response = await fetch(`${apiUrl}/getSortedProducts`);
+
+        if (response.ok) {
+          const data = await response.json();
+          // Update the products state with the sorted products
+          setProducts(data.products);
+        } else {
+          console.error("Failed to fetch sorted products");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    }
+  };
   const handleProductClick = (product) => {
     router.push(`/product?id=${encodeURIComponent(product._id)}`);
   };
@@ -100,9 +120,9 @@ const ProductCategory = ({ cat, sub }) => {
             <option value="High To Low">High To Low</option>
             <option value="Low To High">Low To High</option>
           </select>
-          <select>
-            <option>Sort By</option>
-            <option>Recommended</option>
+          <select onChange={handleSort}>
+            <option value="">Sort By</option>
+            <option value="A to Z">A to Z</option>
           </select>
         </div>
       </div>

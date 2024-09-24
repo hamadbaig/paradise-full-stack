@@ -78,7 +78,7 @@ const ProductMid = ({ find }) => {
           </select>
           <select>
             <option>Sort By</option>
-            <option>Recommended</option>
+            <option>A to Z</option>
           </select>
         </div>
       </div>

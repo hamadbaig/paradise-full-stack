@@ -1,13 +1,14 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ProductCard from "../products/ProductCard";
 import styles from "./Commitment.module.css";
 import { TiTick } from "react-icons/ti";
 import { useDispatch, useSelector } from "react-redux";
 import { productApi } from "@/reduxToolKit/slice";
 import { useRouter, useSearchParams } from "next/navigation";
-
+import Loader from "./Loader";
 const Commitment = () => {
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const dispatch = useDispatch();
@@ -16,19 +17,19 @@ const Commitment = () => {
     dispatch(productApi());
   }, []);
   const product = useSelector((state) => state.productApiData);
-  const isLoading = useSelector((state) => state.isLoading);
-
-  const error = useSelector((state) => state.error);
 
   const handleProductClick = (product) => {
+    setLoading(true);
     router.push(`/product?id=${encodeURIComponent(product._id)}`);
   };
   const viewAll = () => {
+    setLoading(true);
     // router.push(`/categorySearch`);
     router.push(`/categorySearch?category=${encodeURIComponent("")}`);
   };
   return (
     <>
+      {loading && <Loader />}
       <div className={styles.commit}>
         <div>
           <span className={styles.circle}>

@@ -31,8 +31,11 @@ const Product = () => {
   const [step, setStep] = useState(1);
   const [shippingMethods, setShippingMethods] = useState([]);
   const [MethodTime, setMethodTime] = useState([]);
+  const [isAddOnAdded, setIsAddOnAdded] = useState(false);
   // const [AddonItems, setAddonItems] = useState([]);
-  const addonItems = [];
+  // const addonItems = [];
+  const [addonItems, setAddonItems] = useState([]);
+
   const dispatch = useDispatch();
   const router = useRouter();
   const product = useSelector((state) => state.productApiData);
@@ -226,8 +229,13 @@ const Product = () => {
     }
   };
   const handleAddOnClick = (addonproduct) => {
-    addonItems.push(addonproduct);
-    alert("Addon product added");
+    setIsAddOnAdded(true);
+    console.log("Addon product added:", addonproduct);
+
+    // Update state by adding the new addon product
+    setAddonItems((prevAddonItems) => [...prevAddonItems, addonproduct]);
+
+    // alert("Addon product added");
   };
   return (
     <>
@@ -513,7 +521,9 @@ const Product = () => {
               <a className={styles.link} scroll={false} onClick={handleClick}>
                 <button className={styles.button2}>
                   {" "}
-                  Continue Without Add On
+                  {isAddOnAdded
+                    ? "Continue with Add-On"
+                    : "Continue without Add-On"}{" "}
                 </button>
               </a>
             </div>
