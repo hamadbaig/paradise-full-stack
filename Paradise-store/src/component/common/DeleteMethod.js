@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Table, Button, Select, notification } from "antd";
-import styles from "./Methodtime.module.css";
+import styles from "./scheduleTime.module.css";
 
 const { Option } = Select;
 

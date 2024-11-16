@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Form, Input, Select, Button, notification } from "antd";
-import styles from "./Methodtime.module.css";
+import styles from "./scheduleTime.module.css";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
