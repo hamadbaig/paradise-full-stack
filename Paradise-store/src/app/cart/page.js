@@ -323,6 +323,7 @@ const Cart = () => {
   };
   return (
     <>
+      (userId &&
       <div className={styles.CartMain}>
         <div className={styles.overflow}>
           {Data.map((product, productIndex) => (
@@ -587,6 +588,7 @@ const Cart = () => {
           </div>
         </div>
       </div>
+      )
     </>
   );
 };

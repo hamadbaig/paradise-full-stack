@@ -71,7 +71,7 @@ const Commitment = () => {
           </div>
         </div>
         <div className={styles.prod}>
-          {product.map((product, index) => (
+          {product.slice(0, 4).map((product, index) => (
             <ProductCard
               key={index}
               name={product.name}
@@ -99,7 +99,7 @@ const Commitment = () => {
           </div>
         </div>
         <div className={styles.prod}>
-          {product.map((product, index) => (
+          {product.slice(0, 4).map((product, index) => (
             <ProductCard
               key={index}
               name={product.name}

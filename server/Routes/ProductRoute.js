@@ -7,15 +7,14 @@ const {
   getProductById,
   getProductsByCategoryAndSubCategory,
   searchProducts,
+  deleteProductById,
+  updateProductById,
 } = require("../Controllers/ProductController");
 const { authMiddleware } = require("../Middlewares/AuthMiddleware");
 const uploadMiddleware = require("../Middlewares/UploadMiddleware");
 
-// router.post('/addProduct', authMiddleware, uploadMiddleware, addProduct);
 router.post("/addProduct", addProduct);
 
-// router.post('/upload',uploadMiddleware.array("images"), handleFileUpload);
-// router.get('/getProducts', authMiddleware, getProducts);
 router.get("/getProducts", getProducts);
 router.get("/getSortedProducts", getSortedProducts);
 
@@ -26,5 +25,7 @@ router.post(
   "/getProductsByCategoryAndSubCategory",
   getProductsByCategoryAndSubCategory
 );
+router.delete("/deleteProductById/:id", deleteProductById);
+router.post("/UpdateProductById/:id", updateProductById);
 
 module.exports = router;

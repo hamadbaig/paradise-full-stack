@@ -34,3 +34,31 @@ exports.getMethodTime = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+exports.deleteMethodTime = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Check if the method time exists
+    const methodTime = await MethodTime.findById(id);
+    if (!methodTime) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Method time not found." });
+    }
+
+    // Delete the method time
+    await MethodTime.findByIdAndDelete(id);
+
+    res.status(200).json({
+      success: true,
+      message: "Method time deleted successfully.",
+    });
+  } catch (error) {
+    console.error("Error deleting method time:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to delete method time.",
+      error: error.message,
+    });
+  }
+};

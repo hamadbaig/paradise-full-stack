@@ -1,0 +1,28 @@
+.tableContainer {
+  padding: 1rem;
+}
+
+.productTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.productTable th, .productTable td {
+  padding: 0.75rem;
+  border: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+.editIcon, .deleteIcon {
+  cursor: pointer;
+  margin: 0 0.5rem;
+  color: #7E2A66; /* Customize as needed */
+}
+
+.editIcon:hover {
+  color: #be5aa1;
+}
+
+.deleteIcon:hover {
+  color: #ff4d4f; /* Red for delete */
+}

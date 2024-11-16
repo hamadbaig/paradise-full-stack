@@ -16,9 +16,6 @@ const Login = () => {
     }
   }, [user]);
 
-  // if (isLoading) return <div>Loading...</div>;
-  // if (error) return <div>{error.message}</div>;
-
   const handleGoogleLogin = async () => {
     window.location.href = "/api/auth/login?returnTo=/Login";
   };

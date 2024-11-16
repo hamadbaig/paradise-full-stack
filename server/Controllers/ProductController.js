@@ -187,3 +187,50 @@ exports.getProductsByCategoryAndSubCategory = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+exports.deleteProductById = async (req, res) => {
+  try {
+    const productId = req.params.id;
+
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    await Product.findByIdAndDelete(productId);
+
+    res.status(200).json({
+      message: "Product deleted successfully",
+      success: true,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+exports.updateProductById = async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const updateData = req.body.updateData;
+
+    // Find and update the product by ID
+    const updatedProduct = await Product.findByIdAndUpdate(
+      productId,
+      updateData,
+      { new: true }
+    );
+
+    if (!updatedProduct) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    res.status(200).json({
+      message: "Product updated successfully",
+      success: true,
+      product: updatedProduct,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};

@@ -1,0 +1,33 @@
+.updateContainer {
+    padding: 1rem;
+  }
+  
+  .updateContainer h2 {
+    margin-bottom: 1rem;
+  }
+  
+  /* label {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+  }
+  
+  input, textarea {
+    padding: 0.5rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.375rem;
+  }
+   */
+  .updateButton {
+    padding: 0.5rem 1rem;
+    background-color: #7E2A66;
+    color: white;
+    border: none;
+    border-radius: 0.375rem;
+    cursor: pointer;
+  }
+  
+  .updateButton:hover {
+    background-color: #be5aa1;
+  }
+  

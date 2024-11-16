@@ -34,7 +34,7 @@ exports.addOrder = async (req, res) => {
   }
 };
 
-// Get orders by user ID
+// Get orders
 exports.getOrders = async (req, res) => {
   try {
     // Retrieve all orders
@@ -44,6 +44,34 @@ exports.getOrders = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to get orders",
+      error: error.message,
+    });
+  }
+};
+// Get order by ID
+exports.getOrderById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Find the order by ID
+    const order = await Order.findById(id);
+
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      order,
+    });
+  } catch (error) {
+    console.error("Error fetching order by ID:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to get order",
       error: error.message,
     });
   }

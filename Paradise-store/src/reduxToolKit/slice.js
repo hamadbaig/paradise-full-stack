@@ -19,6 +19,12 @@ export const CategoryApi = createAsyncThunk("CategoryApi", async () => {
   const data = await response.json();
   return data.categories; // Return products array directly
 });
+export const AddonApi = createAsyncThunk("AddonApi", async () => {
+  // console.log(apiUrl, "env");
+  const response = await fetch(`${apiUrl}/getAddOn`);
+  const data = await response.json();
+  return data.addOn; // Return products array directly
+});
 const Slice = createSlice({
   name: "cart",
   initialState,
@@ -63,9 +69,21 @@ const Slice = createSlice({
       })
       .addCase(CategoryApi.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.categoryApiData = action.payload; // Assign categories array directly
+        state.categoryApiData = action.payload;
       })
       .addCase(CategoryApi.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      .addCase(AddonApi.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(AddonApi.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.AddonApiData = action.payload;
+      })
+      .addCase(AddonApi.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       });

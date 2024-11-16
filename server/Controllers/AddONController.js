@@ -3,13 +3,7 @@ const AddOn = require("../Models/AddOnModel");
 
 exports.addAddOn = async (req, res) => {
   try {
-    const {
-      name,
-      price,
-      imageUrl,
-      imageUrl1,
-      imageUrl2,
-    } = req.body;
+    const { name, price, imageUrl, imageUrl1, imageUrl2 } = req.body;
 
     const addOn = await AddOn.create({
       name,
@@ -24,113 +18,102 @@ exports.addAddOn = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-exports.getAddOn = async (req, res) => {
-    try {
-      const addOn = await AddOn.find();
-      res
-        .status(200)
-        .json({ message: "Data fetched successfully", success: true, addOn });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Internal Server Error" });
+exports.getAddOnById = async (req, res) => {
+  try {
+    // Extract add-on ID from request body
+    const { addOnId } = req.body;
+
+    // Fetch the add-on based on the provided ID
+    const addOn = await AddOn.findById(addOnId);
+
+    if (!addOn) {
+      return res.status(404).json({ error: "Add-on not found" });
     }
-  };
-// exports.addProduct = async (req, res) => {
-//   try {
-//     const { name, description, price, imageUrls, category } = req.body;
 
-//     // Create a new product and save to the database
-//     const product = await Product.create({
-//       name,
-//       description,
-//       price,
-//       imageUrls,
-//       category,
+    res.status(200).json({
+      message: "Add-on data fetched successfully",
+      success: true,
+      addOn,
+    });
+  } catch (error) {
+    console.error("Error fetching add-on:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+exports.getAddOn = async (req, res) => {
+  try {
+    const addOn = await AddOn.find();
+    res
+      .status(200)
+      .json({ message: "Data fetched successfully", success: true, addOn });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+exports.deleteAddOnById = async (req, res) => {
+  try {
+    const addOnId = req.params.id;
+
+    const addOn = await AddOn.findById(addOnId);
+    if (!addOn) {
+      return res.status(404).json({ error: "Add-on not found" });
+    }
+
+    await AddOn.findByIdAndDelete(addOnId);
+
+    res.status(200).json({
+      message: "Add-on deleted successfully",
+      success: true,
+    });
+  } catch (error) {
+    console.error("Error deleting add-on:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+// exports.updateAddOnById = async (req, res) => {
+//   try {
+//     const addOnId = req.params.id;
+//     const updateData = req.body;
+
+//     const updatedAddOn = await AddOn.findByIdAndUpdate(addOnId, updateData, {
+//       new: true,
 //     });
 
-//     res.status(201).json({ product });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: 'Internal Server Error' });
-//   }
-// };
-// exports.searchAddOn = async (req, res) => {
-//   try {
-//     const { query } = req.query;
-
-//     if (!query) {
-//       return res.status(400).json({ error: "Search query is required" });
+//     if (!updatedAddOn) {
+//       return res.status(404).json({ error: "Add-on not found" });
 //     }
 
-//     const regex = new RegExp(query, "i"); // Case-insensitive regex
-
-//     const products = await .find({
-//       $or: [{ name: regex }, { description: regex }],
+//     res.status(200).json({
+//       message: "Add-on updated successfully",
+//       success: true,
+//       addOn: updatedAddOn,
 //     });
-
-//     res.status(200).json({ products });
 //   } catch (error) {
-//     console.error(error);
+//     console.error("Error updating add-on:", error);
 //     res.status(500).json({ error: "Internal Server Error" });
 //   }
 // };
+exports.updateAddOnById = async (req, res) => {
+  try {
+    const addOnId = req.params.id;
+    const { updateData } = req.body; // Extract the updateData object from the request body
 
-// exports.handleFileUpload = (req, res) => {
-//   // Multer will process the uploaded files, and you can access them in req.files
-//   const fileNames = req.files.map((file) => file.filename);
-//   res.json({ fileNames });
-// };
+    const updatedAddOn = await AddOn.findByIdAndUpdate(addOnId, updateData, {
+      new: true,
+    });
 
+    if (!updatedAddOn) {
+      return res.status(404).json({ error: "Add-on not found" });
+    }
 
-// In your controller file (e.g., ProductController.js)
-// exports.getProductsByCategory = async (req, res) => {
-//   try {
-//     const { categoryId } = req.body;
-//     if (!categoryId) {
-//       return res.status(400).json({
-//         error: "Invalid request. Please provide a category ID.",
-//       });
-//     }
-
-//     const products = await Product.find({ category: { $in: categoryId } });
-//     res
-//       .status(200)
-//       .json({ message: "Data fetched successfully", success: true, products });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// };
-
-// exports.getProductsByCategories = async (req, res) => {
-//   try {
-//     const { categoryId } = req.body;
-//     if (!categoryId || !Array.isArray(categoryId)) {
-//       return res.status(400).json({
-//         error: "Invalid request. Please provide an array of categories.",
-//       });
-//     }
-//     const products = await Product.find({ category: { $in: categoryId } });
-//     res
-//       .status(200)
-//       .json({ message: "Data fetched successfully", success: true, products });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// };
-
-// exports.getProductById = async (req, res) => {
-//   try {
-//     // Extract prodyct ID from request parameters or query parameters
-//     const { productId } = req.body;
-//     // Fetch products based on the filter
-//     const product = await Product.findById(productId);
-//     res
-//       .status(201)
-//       .json({ message: "Data fetched successfully", success: true, product });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// };
+    res.status(200).json({
+      message: "Add-on updated successfully",
+      success: true,
+      addOn: updatedAddOn,
+    });
+  } catch (error) {
+    console.error("Error updating add-on:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
