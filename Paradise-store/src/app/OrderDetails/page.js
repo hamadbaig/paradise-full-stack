@@ -1,12 +1,13 @@
 "use client";
-import React, { useEffect, useState } from "react";
+
+import React, { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation"; // Updated import
 import { Card, List, Typography } from "antd";
 import styles from "./order.module.css";
 const { Text } = Typography;
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-const OrderDetails = () => {
+const OrderDetailsContent = () => {
   const [order, setOrder] = useState(null);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -87,5 +88,11 @@ const OrderDetails = () => {
     </div>
   );
 };
+
+const OrderDetails = () => (
+  <Suspense fallback={<p>Loading...</p>}>
+    <OrderDetailsContent />
+  </Suspense>
+);
 
 export default OrderDetails;

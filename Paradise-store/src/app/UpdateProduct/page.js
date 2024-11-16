@@ -1,11 +1,12 @@
 "use client";
-import React, { useEffect, useState } from "react";
+
+import React, { useEffect, useState, Suspense } from "react";
 import ImageUpload from "@/component/common/ImageUpload";
 import Image from "next/image";
 import { useSearchParams, useRouter } from "next/navigation";
 import styles from "@/component/products/createProducts.module.css";
 
-const UpdateProduct = () => {
+const UpdateProductContent = () => {
   const searchParams = useSearchParams();
   const Id = searchParams.get("id");
   const router = useRouter();
@@ -137,77 +138,55 @@ const UpdateProduct = () => {
           placeholder="Product Subcategory"
         />
 
-        {/* Main Image URL with Upload and Preview */}
-        <div className={styles.imageField}>
-          <input
-            type="text"
-            name="mainImageUrl"
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
-            className={styles.input}
-            placeholder="Main Image URL"
-          />
-          <ImageUpload onImageUpload={(url) => setImageUrl(url)} />
-          {imageUrl && (
-            <Image
-              src={imageUrl}
-              alt="Main Image"
-              width={50}
-              height={50}
-              className={styles.imagePreview}
+        {/* Image Upload and Preview Fields */}
+        {[
+          { label: "Main Image", value: imageUrl, setValue: setImageUrl },
+          {
+            label: "Additional Image 1",
+            value: imageUrl1,
+            setValue: setImageUrl1,
+          },
+          {
+            label: "Additional Image 2",
+            value: imageUrl2,
+            setValue: setImageUrl2,
+          },
+        ].map((img, index) => (
+          <div className={styles.imageField} key={index}>
+            <input
+              type="text"
+              name={img.label.toLowerCase().replace(" ", "")}
+              value={img.value}
+              onChange={(e) => img.setValue(e.target.value)}
+              className={styles.input}
+              placeholder={`${img.label} URL`}
             />
-          )}
-        </div>
-
-        {/* Additional Image 1 URL with Upload and Preview */}
-        <div className={styles.imageField}>
-          <input
-            type="text"
-            name="imageUrl1"
-            value={imageUrl1}
-            onChange={(e) => setImageUrl1(e.target.value)}
-            className={styles.input}
-            placeholder="Additional Image 1 URL"
-          />
-          <ImageUpload onImageUpload={(url) => setImageUrl1(url)} />
-          {imageUrl1 && (
-            <Image
-              src={imageUrl1}
-              alt="Additional Image 1"
-              width={50}
-              height={50}
-              className={styles.imagePreview}
-            />
-          )}
-        </div>
-
-        {/* Additional Image 2 URL with Upload and Preview */}
-        <div className={styles.imageField}>
-          <input
-            type="text"
-            name="imageUrl2"
-            value={imageUrl2}
-            onChange={(e) => setImageUrl2(e.target.value)}
-            className={styles.input}
-            placeholder="Additional Image 2 URL"
-          />
-          <ImageUpload onImageUpload={(url) => setImageUrl2(url)} />
-          {imageUrl2 && (
-            <Image
-              src={imageUrl2}
-              alt="Additional Image 2"
-              width={50}
-              height={50}
-              className={styles.imagePreview}
-            />
-          )}
-        </div>
+            <ImageUpload onImageUpload={(url) => img.setValue(url)} />
+            {img.value && (
+              <Image
+                src={img.value}
+                alt={`${img.label}`}
+                width={50}
+                height={50}
+                className={styles.imagePreview}
+              />
+            )}
+          </div>
+        ))}
 
         <button type="button" onClick={handleUpdate} className={styles.button}>
           Update Product
         </button>
       </form>
     </div>
+  );
+};
+
+const UpdateProduct = () => {
+  return (
+    <Suspense fallback={<p>Loading...</p>}>
+      <UpdateProductContent />
+    </Suspense>
   );
 };
 

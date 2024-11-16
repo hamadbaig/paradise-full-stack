@@ -1,11 +1,11 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import ImageUpload from "@/component/common/ImageUpload";
 import Image from "next/image";
 import { useSearchParams, useRouter } from "next/navigation";
 import styles from "@/component/products/createProducts.module.css";
 
-const UpdateAddon = () => {
+const UpdateAddonContent = () => {
   const searchParams = useSearchParams();
   const Id = searchParams.get("id");
   const router = useRouter();
@@ -23,7 +23,7 @@ const UpdateAddon = () => {
   // Fetch product data by ID
   useEffect(() => {
     if (!Id) {
-      setError("Add on ID not provided.");
+      setError("Add-on ID not provided.");
       setLoading(false);
       return;
     }
@@ -45,7 +45,7 @@ const UpdateAddon = () => {
           setImageUrl1(Addon.imageUrl1 || "");
           setImageUrl2(Addon.imageUrl2 || "");
         } else {
-          setError("product not found.");
+          setError("Product not found.");
         }
       })
       .catch((error) => setError("Error fetching product: " + error))
@@ -70,18 +70,13 @@ const UpdateAddon = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("Update response:", data);
         if (data.success) {
           router.push("/AdminPanel@123");
         } else {
-          console.error("Update failed:", data.error);
           setError("Error updating product: " + data.error);
         }
       })
-      .catch((error) => {
-        console.error("Fetch error:", error);
-        setError("Error updating product: " + error);
-      });
+      .catch((error) => setError("Error updating product: " + error));
   };
 
   if (loading) {
@@ -101,7 +96,6 @@ const UpdateAddon = () => {
           className={styles.input}
           placeholder="Product Name"
         />
-
         <input
           type="text"
           name="price"
@@ -184,5 +178,11 @@ const UpdateAddon = () => {
     </div>
   );
 };
+
+const UpdateAddon = () => (
+  <Suspense fallback={<p>Loading component...</p>}>
+    <UpdateAddonContent />
+  </Suspense>
+);
 
 export default UpdateAddon;
